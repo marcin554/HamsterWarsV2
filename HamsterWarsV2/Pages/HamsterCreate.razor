@@ -1,0 +1,56 @@
+﻿@page "/HamsterCreate"
+@using HamsterWarsV2.Services.Contracts
+@inherits HamsterCreateBase
+
+
+<h3>HamsterCreate</h3>
+
+
+ <EditForm Model="@hamster" class="row p-3 w-50" OnValidSubmit="@HandleValidSubmit">
+
+<DataAnnotationsValidator />
+<ValidationSummary />
+     <div class="col-md-12 mb-3">
+         <label for="Name">Name</label>
+         <InputText id="HamsterName" @bind-Value="hamster.HamsterName" class="form-control" />
+     </div>
+         <div class="col-md-12 mb-3">
+         <label for="HamsterAge">HamsterAge</label>
+         <InputNumber id="HamsterAge" @bind-Value="hamster.HamsterAge" class="form-control" />
+     </div>
+      <div class="col-md-12 mb-3">
+         <label for="FavoriteFood">Favorite Food</label>
+         <InputText id="FavFood" @bind-Value="hamster.FavFood" class="form-control" />
+     </div>
+     <div class="col-md-12 mb-3">
+         <label for="Loves">Loves</label>
+         <InputText id="Loves" @bind-Value="hamster.Loves" class="form-control" />
+     </div>
+     <div class="col-md-12 mb-3">
+         <label for="ImgName">ImgName</label>
+         <InputText id="ImgName" @bind-Value="hamster.ImgName" class="form-control" />
+     </div>
+     <div class="col-12 mb-3">
+      <button type="submit" class="btn btn-primary">Submit</button>
+   </div>
+   @message;
+ </EditForm>
+
+@code {
+    public Hamster hamster = new Hamster();
+    public string message = "";
+
+    private void HandleValidSubmit() 
+    {
+        Message();
+        
+        HamsterService.InsertHamster(hamster);
+        
+    }
+
+    public string Message()
+    {
+        message = "Created successfully.";
+        return message;
+    }
+}

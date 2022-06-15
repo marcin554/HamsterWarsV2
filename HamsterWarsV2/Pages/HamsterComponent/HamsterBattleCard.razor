@@ -1,0 +1,87 @@
+﻿@using HamsterWarsV2.Services.Contracts
+@inherits HamsterGalleryBase
+
+
+
+ @foreach (Hamster h in Hamsters)
+ {
+    <div class="container" style="text-align: center;">
+        <div class="card col-5 row-5 rounded" style="float:left; margin: 0.5%; background-color: lightgreen; ">
+         <h3><b>@h.HamsterName</b></h3>
+         <img class="row-5 col-10 w "style="margin-bottom: 2%; border-bottom: 5px dashed blue; border-radius: 10px;" src="/Content/Images/@h.ImgName">
+         <h5><b>Name:</b> @h.HamsterName</h5>
+         <h5><b>Age:</b> @h.HamsterAge</h5>
+         <h5><b>Favorite food:</b> @h.FavFood</h5> 
+         <h5><b>Loves:</b> @h.Loves</h5> 
+         <button class="btn btn-primary" @onclick="(() => AddLikesAndMoreHamsters(h.HamsterId))"  id="@h.HamsterId" >Like</button>
+
+          
+        </div>
+        
+        </div>
+
+        
+ }
+
+ @if (doneMatch != null)
+{
+    @foreach (Hamster h in current)
+    {
+        
+        <div class="container" style="text-align: center;">
+         
+        <div class="card col-2 row-5 rounded" style="float:left; margin: 0.5%; background-color: lightgreen; ">
+                Last Match   
+        @if(h.HamsterId == winnerHamster)
+        {
+            <h2>Winner!</h2>
+        }
+         <a href="HamsterDetails\@h.HamsterId"><h3><b>@h.HamsterName</b></h3></a>
+         <h5><b>Name:</b> @h.HamsterName</h5>
+         <h5><b>Wins</b> @h.Wins</h5> 
+         <h5><b>Losses</b> @h.Losses</h5> 
+         <h5><b>Games</b> @h.Games</h5> 
+        </div>
+        
+        </div>
+        
+    }
+    
+}
+
+
+
+@code{
+    public List<Hamster> current;
+    public List<Hamster> doneMatch;
+    public int winnerHamster;
+
+
+
+    public async void AddLikesAndMoreHamsters(int winner)
+    {
+        doneMatch = new List<Hamster>();
+        current = Hamsters.ToList();
+        newHamsters();
+        Hamster losser = current.Where(w => w.HamsterId != winner).FirstOrDefault();
+
+
+        HamsterService.UpdateHamsters(winner, true);
+        HamsterService.UpdateHamsters(losser.HamsterId, false);
+
+        winnerHamster = winner;
+
+
+
+
+
+    }
+
+    public async Task newHamsters()
+    {
+        Hamsters = await HamsterService.GetTwoRandomHamsters();
+        StateHasChanged();
+        await Task.Run(() => Thread.Sleep(50));
+
+ }
+ }

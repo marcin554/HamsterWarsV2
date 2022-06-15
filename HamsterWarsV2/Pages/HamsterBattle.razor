@@ -1,0 +1,22 @@
+﻿@page "/HamsterBattle/"
+@using HamsterWarsV2.Pages.HamsterComponent
+@inherits HamsterBattleBase
+
+<h3>HamsterBattle</h3>
+
+@if(Hamsters == null)
+{
+
+    <h3>Loading hamsters...</h3>
+    
+   
+}
+else
+{
+    <HamsterBattleCard Hamsters="@Hamsters" ></HamsterBattleCard>
+}
+
+@code {
+
+   
+}

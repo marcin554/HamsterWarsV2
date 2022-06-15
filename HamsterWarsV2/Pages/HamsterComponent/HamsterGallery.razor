@@ -1,0 +1,27 @@
+﻿@inherits HamsterGalleryBase
+
+
+ @foreach (Hamster h in Hamsters)
+ {
+     bool a = false;
+    <div class="container" style="text-align: center;">
+        
+        <div class="card col-5 row-5 rounded" style="float:left; margin: 0.5%;">
+            <button class="btn btn-primary w-25"  @onclick="(() => RemoveHamster(h.HamsterId))">X</button>
+         <h3><b>@h.HamsterName</b></h3>
+         <a href="HamsterDetails\@h.HamsterId"><img class="row-5 col-10 w" src="/Content/Images/@h.ImgName"></a>
+        <h5><b>Likes:</b> @h.Wins</h5> 
+        <h5><b>Losses:</b> @h.Losses</h5> 
+        
+        </div>
+    </div>
+ }
+
+@code{
+    public async void RemoveHamster(int id)
+    {
+        await HamsterService.DeleteHamster(id);
+        Hamsters = await HamsterService.GetHamsters();
+        StateHasChanged();
+    }
+ }

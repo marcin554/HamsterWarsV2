@@ -1,0 +1,45 @@
+﻿@page "/hamsters"
+@using HamsterWarsV2.Pages.HamsterComponent
+
+@inherits HamstersBase
+@inject NavigationManager NavigationManager;
+
+@if(Hamsters == null)
+{
+    <h3>Loading hamsters...</h3>
+
+}
+else
+{    
+    <h3 class="mb-5">Hamsters </h3>
+    <button class="btn btn-primary w-25"  @onclick="(() => MethodToTrigger())">Add Hamster</button>
+    var hamsterCount = Hamsters.Count();
+    <h2>Hamster Count @hamsterCount</h2>
+
+
+    if (hamsterCount > 0)
+    {
+        const int itemsPerRow = 2;
+        var hamsters = new List<Hamster>();
+
+        @for (int i = 0; i < hamsterCount; i++)
+        {
+            hamsters = Hamsters.Skip(i * itemsPerRow).Take(itemsPerRow).ToList();
+
+           <HamsterGallery Hamsters="@hamsters"></HamsterGallery>
+    
+}
+        }
+
+    }
+}
+
+@code {
+
+
+    public void MethodToTrigger()
+    {
+        NavigationManager.NavigateTo("HamsterCreate");
+    }
+
+}
